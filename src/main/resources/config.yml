@@ -1,0 +1,143 @@
+# ============================================================
+#  Разлом — ивент для гриф-сервера (Paper 1.21.11)
+#  Цвета: &6 золотой, &e жёлтый, &5 фиолетовый и т.д.
+# ============================================================
+
+# Мир, в котором появляется Разлом (пусто = первый мир сервера)
+world: ""
+
+# Автозапуск ивента (как аирдроп)
+auto:
+  enabled: true
+  interval-minutes: 120    # в среднем раз в 2 часа
+  jitter-percent: 25       # случайный интервал примерно 90–150 минут
+  min-players: 3           # минимум игроков онлайн для автозапуска
+
+# Где может появиться Разлом (расстояние от точки спавна мира)
+location:
+  min-distance: 400
+  max-distance: 2500
+
+# Время (в секундах)
+timeline:
+  announce: 60       # за сколько секунд до открытия объявляем «Земля дрожит...»
+  coords-at: 30      # за сколько секунд до открытия публикуем координаты
+  grow-seconds: 360  # за какое время зона вырастает до максимума
+  weak-at: 360       # с этой секунды Разлом «нестабилен» — луте-блоков меньше
+  end-at: 480        # с этой секунды «Лут закончился» — блоков больше нет
+  ruin-delay: 10     # через сколько секунд после конца лута появляется Руина
+  ruin-duration: 120 # сколько секунд можно забирать лут из Руины
+
+# Форма Разлома
+shape:
+  start-radius: 9
+  max-radius: 19
+  depth: 6           # более компактный и неглубокий разлом
+
+# Лут-блоки (светящиеся блоки, которые ломают игроки)
+loot-blocks:
+  material: GLOWSTONE
+  cap-active: 14          # максимум блоков одновременно (фаза «активен»)
+  cap-weak: 4             # максимум блоков в фазе «нестабилен»
+  chance-active: 0.35     # шанс появления нового блока каждую секунду
+  chance-weak: 0.07
+  initial: 6              # сколько блоков появляется сразу при открытии
+  items-min: 1            # предметов с одного блока
+  items-max: 3
+  ambush-chance: 0.06     # шанс, что из блока вылезет моб (засада)
+  donate-chance: 0.03     # шанс получить донат-предмет из блока
+
+# Моби Разлома
+mobs:
+  enabled: true
+  cap: 8
+  interval-seconds: 8
+  name: "&6&lСтраж Разлома"
+  types: [PIGLIN_BRUTE, PILLAGER, VINDICATOR, WITHER_SKELETON]
+
+# Донат-предметы (облегчённые версии магазинных)
+donate:
+  orb-seconds: 600                  # сколько секунд работает шар в руке
+  midas-material: GLOWSTONE_DUST
+  calm-material: PRISMARINE_SHARD
+
+# Руина (бочка с ценным лутом в конце)
+ruin:
+  netherite-blocks: 2
+  donate-min: 2
+  donate-max: 3
+
+# Плавающая панель над Разломом (тот же дизайн, что и скорборд сервера:
+# золотая смужка слева, жовтые подписи, тёмный фон). Сайдбар-скорборд НЕ используется.
+panel:
+  enabled: true
+  height: 3.5          # высота над краем воронки
+  view-range: 2.0      # дальность видимости (множитель)
+  title: "&8[&6&lРАЗЛОМ&8]"
+
+# Босс-бар сверху для всех игроков
+bossbar:
+  enabled: true
+
+# После окончания вернуть местность как было (блоки, которые поставил плагин)
+restore-terrain: true
+
+# Команды от консоли при открытии/закрытии Разлома.
+# Плейсхолдеры: {world} {x} {y} {z} {radius}
+# Сюда можно повесить отключение приватов, например (WorldGuard):
+#   - "rg define rift_zone ..."
+hooks:
+  on-open: []
+  on-close: []
+
+# Награды командами (экономика сервера). Включите и впишите свои команды.
+# Плейсхолдер {player}
+command-rewards:
+  enabled: false
+  chance: 0.10
+  list:
+    - {cmd: "eco give {player} 250", weight: 10}
+    - {cmd: "eco give {player} 1000", weight: 2}
+
+# Таблица лута лут-блоков (каждый раз случайно, с учётом веса)
+loot:
+  items:
+    - {item: DIAMOND, min: 1, max: 3, weight: 10}
+    - {item: NETHERITE_SCRAP, min: 1, max: 2, weight: 6}
+    - {item: NETHERITE_INGOT, min: 1, max: 1, weight: 1}
+    - {item: GOLDEN_APPLE, min: 1, max: 3, weight: 10}
+    - {item: ENCHANTED_GOLDEN_APPLE, min: 1, max: 1, weight: 1}
+    - {item: ENDER_PEARL, min: 1, max: 4, weight: 8}
+    - {item: EXPERIENCE_BOTTLE, min: 8, max: 24, weight: 10}
+    - {item: TNT, min: 4, max: 16, weight: 8}
+    - {item: OBSIDIAN, min: 8, max: 24, weight: 8}
+    - {item: IRON_INGOT, min: 8, max: 24, weight: 12}
+    - {item: GOLD_INGOT, min: 8, max: 24, weight: 10}
+    - {item: EMERALD, min: 4, max: 16, weight: 8}
+    - {item: COBWEB, min: 4, max: 12, weight: 6}
+    - {item: TOTEM_OF_UNDYING, min: 1, max: 1, weight: 2}
+    - {item: ARROW, min: 16, max: 48, weight: 6}
+    - {item: COOKED_BEEF, min: 16, max: 32, weight: 8}
+    - {item: FIREWORK_ROCKET, min: 8, max: 16, weight: 4}
+    - {item: GUNPOWDER, min: 8, max: 24, weight: 6}
+    - {item: DIAMOND_BLOCK, min: 1, max: 1, weight: 1}
+
+# Сообщения
+messages:
+  prefix: "&8[&6&lРАЗЛОМ&8] "
+  pre-announce: "&6Земля дрожит... &7Через &f{time} &7что-то прорвётся наружу."
+  coords: "&7Координаты: &fX {x} Y {y} Z {z} &7(мир &f{world}&7)"
+  open: "&6Разлом открылся! &7Ломайте &eсветящиеся блоки &7— в них лут. &cПриваты здесь не работают!"
+  open-title: "&6&lРАЗЛОМ"
+  open-subtitle: "&8Он открылся..."
+  weak: "&eРазлом нестабилен... &7Светящихся блоков становится всё меньше!"
+  ended: "&cЛут закончился!"
+  ended-title: "&c&lЛУТ ЗАКОНЧИЛСЯ"
+  ended-subtitle: "&7Разлом иссяк"
+  ruin: "&dВ центре появилась &6Руина &7— бочка с ценным лутом. Времени: &f{time}&7!"
+  finish: "&7Руина рассыпалась. Разлом закрылся."
+  top-header: "&7Топ добытчиков Разлома:"
+  top-line: "&6{place}. &f{name} &7— &e{count} &7блоков"
+  loot-got: "&6+ &f{items}"
+  protected: "&cЭто сломать нельзя!"
+  orb-broken: "&cШар рассыпался в пыль."

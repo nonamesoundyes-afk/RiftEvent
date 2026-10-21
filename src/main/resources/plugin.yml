@@ -1,0 +1,15 @@
+name: RiftEvent
+main: ua.rift.RiftPlugin
+version: 1.0.1
+api-version: '1.21'
+author: Rift
+description: Ивент «Разлом» для гриф-сервера — воронка, светящиеся лут-блоки, моби, Руина с донат-предметами.
+commands:
+  rift:
+    description: Управление ивентом Разлом
+    usage: /rift <start|stop|info|tp|give|reload>
+    aliases: [razlom]
+permissions:
+  rift.admin:
+    description: Управление ивентом Разлом
+    default: op
